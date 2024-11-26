@@ -14,7 +14,7 @@ public class ConnectionFactory {
         try {
             return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
-            throw new RuntimeException("Erro ao conectar ao banco de dados: " + e.getMessage(), e);
+            throw new RuntimeException("Erro ao conectar ao banco de dados MySQL Organo-App: " + e.getMessage(), e);
         }
     }
 }
