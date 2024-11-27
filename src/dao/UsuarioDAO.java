@@ -41,4 +41,32 @@ public class UsuarioDAO {
         }
         return null;
     }
+    
+    public Usuario autenticar(String email, String senha) {
+        String sql = "SELECT * FROM usuario WHERE email = ? AND senha = ?";
+        
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, email);
+            stmt.setString(2, senha);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new Usuario(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("email"),
+                        rs.getString("senha")
+                    );
+                }
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao autenticar o usuário: " + e.getMessage(), e);
+        }
+
+        return null;
+    }
+    
 }

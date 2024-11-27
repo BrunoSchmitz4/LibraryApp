@@ -3,15 +3,20 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/view/CadastroLivroView.java</file>
+            <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/view/GerenciarLivrosView.java</file>
             <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/libraryapp/Main.java</file>
-            <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/models/Usuario.java</file>
-            <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/models/Livro.java</file>
+            <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/view/LoginView.java</file>
             <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/dao/LivroDAO.java</file>
+            <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/view/GerenciarGenerosView.java</file>
             <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/dao/GeneroLiterarioDAO.java</file>
             <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/dao/UsuarioDAO.java</file>
-            <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/dao/TestConnection.java</file>
             <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/dao/ConnectionFactory.java</file>
             <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/models/GeneroLiterario.java</file>
+            <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/view/MenuPrincipal.java</file>
+            <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/models/Usuario.java</file>
+            <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/models/Livro.java</file>
+            <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/dao/TestConnection.java</file>
         </group>
     </open-files>
 </project-private>
