@@ -55,8 +55,11 @@ public class MenuPrincipal extends JFrame {
 }
 
     private void abrirTelaGerenciarGeneros() {
-        JOptionPane.showMessageDialog(this, "Abrir Tela Gerenciar Gêneros Literários (a implementar)");
-    }
+    SwingUtilities.invokeLater(() -> {
+        new GerenciarGenerosView().setVisible(true);
+    });
+}
+
 
     private void abrirTelaListarLivrosPorGenero() {
         JOptionPane.showMessageDialog(this, "Abrir Tela Listar Livros por Gênero (a implementar)");

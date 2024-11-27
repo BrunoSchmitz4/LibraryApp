@@ -21,6 +21,37 @@ public class GeneroLiterarioDAO {
             throw new RuntimeException("Erro ao criar o gênero literário: " + e.getMessage(), e);
         }
     }
+    
+    public void update(GeneroLiterario genero) {
+    String sql = "UPDATE genero_literario SET nome = ? WHERE id = ?";
+
+    try (Connection conn = ConnectionFactory.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        stmt.setString(1, genero.getNome());
+        stmt.setInt(2, genero.getId());
+        stmt.executeUpdate();
+
+    } catch (Exception e) {
+        throw new RuntimeException("Erro ao atualizar o gênero literário: " + e.getMessage(), e);
+    }
+}
+    
+    public void delete(int id) {
+    String sql = "DELETE FROM genero_literario WHERE id = ?";
+
+    try (Connection conn = ConnectionFactory.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        stmt.setInt(1, id);
+        stmt.executeUpdate();
+
+    } catch (Exception e) {
+        throw new RuntimeException("Erro ao excluir o gênero literário: " + e.getMessage(), e);
+    }
+}
+
+
 
     // Buscar todos os gêneros literários
     public List<GeneroLiterario> findAll() {
