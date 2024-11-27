@@ -1,7 +1,6 @@
 package dao;
 
-import model.GeneroLiterario;
-
+import models.GeneroLiterario;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

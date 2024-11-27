@@ -1,7 +1,7 @@
 package view;
 
 import dao.UsuarioDAO;
-import model.Usuario;
+import models.Usuario;
 
 import javax.swing.*;
 import java.awt.*;

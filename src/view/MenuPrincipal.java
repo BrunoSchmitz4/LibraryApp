@@ -9,6 +9,13 @@ import view.GerenciarLivrosView;
 public class MenuPrincipal extends JFrame {
 
     public MenuPrincipal() {
+        setTitle("Menu Principal");
+        setSize(600, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        JLabel label = new JLabel("Bem-vindo ao sistema!", SwingConstants.CENTER);
+        add(label);
         setTitle("Sistema de Gerenciamento de Biblioteca");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -58,11 +65,9 @@ public class MenuPrincipal extends JFrame {
     SwingUtilities.invokeLater(() -> {
         new GerenciarGenerosView().setVisible(true);
     });
-}
-
-
+    }
     private void abrirTelaListarLivrosPorGenero() {
-        JOptionPane.showMessageDialog(this, "Abrir Tela Listar Livros por Gênero (a implementar)");
+        SwingUtilities.invokeLater(() -> new ListarLivrosPorGeneroView().setVisible(true));
     }
 
     private void abrirTelaLogin() {

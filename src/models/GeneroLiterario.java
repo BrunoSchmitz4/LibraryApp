@@ -1,4 +1,4 @@
-package model;
+package models;
 
 public class GeneroLiterario {
     private int id;
@@ -19,4 +19,9 @@ public class GeneroLiterario {
 
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
+    
+    @Override
+    public String toString() {
+        return nome; // Exibe o nome do gênero literário
+    }
 }

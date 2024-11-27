@@ -1,119 +1,114 @@
 package view;
 
 import dao.LivroDAO;
-import model.Livro;
+import models.Livro;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 public class CadastroLivroView extends JFrame {
 
-    // Componentes da interface
     private JTextField txtTitulo;
     private JTextField txtAutor;
-    private JTextField txtGeneroId;
+    private JTextField txtGeneroLiterario;
     private JTextField txtClassificacao;
     private JTextField txtImagem;
-    private JButton btnSalvar;
-    private JButton btnCancelar;
-    private int idLivro = 0; // Inicializa com 0, usado para identificar edições
-
+    private JCheckBox chkFavorito;
 
     public CadastroLivroView() {
-        setTitle("Cadastro de Livro");
-        setSize(400, 300);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Fecha apenas esta janela
-        setLocationRelativeTo(null); // Centraliza a janela
+        setTitle("Cadastrar Livro");
+        setSize(400, 400);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new GridLayout(7, 2, 10, 10)); // Layout com 7 linhas e 2 colunas
 
-        // Painel principal
-        JPanel panel = new JPanel(new GridLayout(6, 2, 10, 10));
+        inicializarComponentes();
+    }
 
-        // Campos e rótulos
-        panel.add(new JLabel("Título:"));
+    // Inicializa os componentes da interface
+    private void inicializarComponentes() {
+        JLabel lblTitulo = new JLabel("Título:");
         txtTitulo = new JTextField();
-        panel.add(txtTitulo);
+        add(lblTitulo);
+        add(txtTitulo);
 
-        panel.add(new JLabel("Autor:"));
+        JLabel lblAutor = new JLabel("Autor:");
         txtAutor = new JTextField();
-        panel.add(txtAutor);
+        add(lblAutor);
+        add(txtAutor);
 
-        panel.add(new JLabel("ID do Gênero Literário:"));
-        txtGeneroId = new JTextField();
-        panel.add(txtGeneroId);
+        JLabel lblGeneroLiterario = new JLabel("Gênero Literário (ID):");
+        txtGeneroLiterario = new JTextField();
+        add(lblGeneroLiterario);
+        add(txtGeneroLiterario);
 
-        panel.add(new JLabel("Classificação:"));
+        JLabel lblClassificacao = new JLabel("Classificação:");
         txtClassificacao = new JTextField();
-        panel.add(txtClassificacao);
+        add(lblClassificacao);
+        add(txtClassificacao);
 
-        panel.add(new JLabel("URL da Imagem:"));
+        JLabel lblImagem = new JLabel("URL da Imagem:");
         txtImagem = new JTextField();
-        panel.add(txtImagem);
+        add(lblImagem);
+        add(txtImagem);
 
-        // Botões
-        btnSalvar = new JButton("Salvar");
-        btnCancelar = new JButton("Cancelar");
+        JLabel lblFavorito = new JLabel("Favorito:");
+        chkFavorito = new JCheckBox();
+        add(lblFavorito);
+        add(chkFavorito);
 
-        panel.add(btnSalvar);
-        panel.add(btnCancelar);
+        // Botão para salvar o livro
+        JButton btnSalvar = new JButton("Salvar");
+        btnSalvar.addActionListener(e -> salvarLivro());
+        add(btnSalvar);
 
-        add(panel);
-
-        // Ações dos botões
-        btnSalvar.addActionListener(this::salvarLivro);
+        // Botão para cancelar o cadastro
+        JButton btnCancelar = new JButton("Cancelar");
         btnCancelar.addActionListener(e -> dispose()); // Fecha a janela
+        add(btnCancelar);
     }
-    
-    public void setDadosLivro(int id, String titulo, String autor, int generoId, int classificacao, String imagem) {
-    // Preencher os campos com os dados recebidos
-    txtTitulo.setText(titulo);
-    txtAutor.setText(autor);
-    txtGeneroId.setText(String.valueOf(generoId));
-    txtClassificacao.setText(String.valueOf(classificacao));
-    txtImagem.setText(imagem);
 
-    // Desabilitar o campo de ID (opcional, pois ele não é exibido na tela)
-    this.idLivro = id; // Variável que guardará o ID para edição no banco
-}
+    // Salva o livro no banco de dados
+    private void salvarLivro() {
+        try {
+            String titulo = txtTitulo.getText();
+            String autor = txtAutor.getText();
+            int generoLiterario = Integer.parseInt(txtGeneroLiterario.getText());
+            int classificacao = Integer.parseInt(txtClassificacao.getText());
+            String imagem = txtImagem.getText();
+            boolean favorito = chkFavorito.isSelected();
 
+            // Validações simples
+            if (titulo.isEmpty() || autor.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Preencha todos os campos obrigatórios!", "Erro", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
-    // Método para salvar o livro
-    private void salvarLivro(ActionEvent e) {
-    try {
-        // Coletar os dados da interface
-        String titulo = txtTitulo.getText();
-        String autor = txtAutor.getText();
-        int generoId = Integer.parseInt(txtGeneroId.getText());
-        int classificacao = Integer.parseInt(txtClassificacao.getText());
-        String imagem = txtImagem.getText();
+            // Cria o objeto Livro
+            Livro livro = new Livro();
+            livro.setTitulo(titulo);
+            livro.setAutor(autor);
+            livro.setGeneroLiterario(generoLiterario);
+            livro.setClassificacao(classificacao);
+            livro.setImagem(imagem);
+            livro.setFavorito(favorito);
 
-        LivroDAO livroDAO = new LivroDAO();
+            // Salva o livro no banco de dados
+            LivroDAO livroDAO = new LivroDAO();
+            livroDAO.insert(livro);
 
-        if (idLivro > 0) {
-            // Atualizar livro existente
-            Livro livro = new Livro(idLivro, titulo, autor, generoId, classificacao, imagem);
-            livroDAO.update(livro);
-            JOptionPane.showMessageDialog(this, "Livro atualizado com sucesso!");
-        } else {
-            // Inserir novo livro
-            Livro livro = new Livro(0, titulo, autor, generoId, classificacao, imagem);
-            livroDAO.create(livro);
             JOptionPane.showMessageDialog(this, "Livro cadastrado com sucesso!");
+            dispose(); // Fecha a janela após o cadastro
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Classificação e Gênero Literário devem ser números válidos!", "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Ocorreu um erro ao cadastrar o livro.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
-
-        dispose(); // Fecha a janela após salvar
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, "Erro: Preencha os campos numéricos corretamente.", "Erro de validação", JOptionPane.ERROR_MESSAGE);
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "Erro ao salvar o livro: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
     }
-}
 
-
-    // Método principal para testes isolados
+    // Método principal para teste
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new CadastroLivroView().setVisible(true);
-        });
+        SwingUtilities.invokeLater(() -> new CadastroLivroView().setVisible(true));
     }
 }

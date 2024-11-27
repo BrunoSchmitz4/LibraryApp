@@ -1,7 +1,7 @@
 package view;
 
 import dao.GeneroLiterarioDAO;
-import model.GeneroLiterario;
+import models.GeneroLiterario;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
