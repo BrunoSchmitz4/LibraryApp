@@ -81,7 +81,7 @@ public class LivroDAO {
     }
 
     // Exclui um livro pelo ID
-    public void delete(int id) {
+    public boolean delete(int id) {
         String sql = "DELETE FROM livro WHERE id = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
@@ -89,9 +89,11 @@ public class LivroDAO {
 
             stmt.setInt(1, id);
             stmt.executeUpdate();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     // Insere um novo livro

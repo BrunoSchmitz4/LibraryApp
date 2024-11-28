@@ -149,10 +149,16 @@ public class GerenciarLivrosView extends JFrame {
         int confirm = JOptionPane.showConfirmDialog(this, "Deseja realmente excluir este livro?", "Confirmação", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             LivroDAO livroDAO = new LivroDAO();
-            livroDAO.delete(livroId);
-            carregarLivros(); // Recarrega os livros após a exclusão
+            boolean sucesso = livroDAO.delete(livroId);
+            if (sucesso) {
+                JOptionPane.showMessageDialog(this, "Livro excluído com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                carregarLivros(); // Recarrega os livros após a exclusão
+            } else {
+                JOptionPane.showMessageDialog(this, "Erro ao excluir o livro. Tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
+
 
     // Exibe apenas os livros favoritos
     private void exibirFavoritos() {

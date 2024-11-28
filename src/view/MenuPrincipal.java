@@ -29,16 +29,16 @@ public class MenuPrincipal extends JFrame {
         JButton btnGerenciarLivros = new JButton("Gerenciar Livros");
         JButton btnGerenciarGeneros = new JButton("Gerenciar Gêneros Literários");
         JButton btnListarLivrosPorGenero = new JButton("Listar Livros por Gênero");
-        JButton btnLogin = new JButton("Login de Usuários");
-        JButton btnFavoritos = new JButton("Gerenciar Favoritos");
+//        JButton btnLogin = new JButton("Login de Usuários");
+//        JButton btnFavoritos = new JButton("Gerenciar Favoritos");
         JButton btnSair = new JButton("Sair");
 
         // Adicionando os botões ao painel
         panel.add(btnGerenciarLivros);
         panel.add(btnGerenciarGeneros);
         panel.add(btnListarLivrosPorGenero);
-        panel.add(btnLogin);
-        panel.add(btnFavoritos);
+//        panel.add(btnLogin);
+//        panel.add(btnFavoritos);
         panel.add(btnSair);
 
         // Adicionando o painel à janela
@@ -48,8 +48,8 @@ public class MenuPrincipal extends JFrame {
         btnGerenciarLivros.addActionListener(e -> abrirTelaGerenciarLivros());
         btnGerenciarGeneros.addActionListener(e -> abrirTelaGerenciarGeneros());
         btnListarLivrosPorGenero.addActionListener(e -> abrirTelaListarLivrosPorGenero());
-        btnLogin.addActionListener(e -> abrirTelaLogin());
-        btnFavoritos.addActionListener(e -> abrirTelaGerenciarFavoritos());
+//        btnLogin.addActionListener(e -> abrirTelaLogin());
+//        btnFavoritos.addActionListener(e -> abrirTelaGerenciarFavoritos());
         btnSair.addActionListener(e -> System.exit(0));
     }
 
@@ -70,18 +70,22 @@ public class MenuPrincipal extends JFrame {
         SwingUtilities.invokeLater(() -> new ListarLivrosPorGeneroView().setVisible(true));
     }
 
-    private void abrirTelaLogin() {
-        JOptionPane.showMessageDialog(this, "Abrir Tela Login (a implementar)");
-    }
+//    // Método para abrir a tela de login
+//    private void abrirTelaLogin() {
+//        // Crie uma instância da tela de login e torne-a visível
+//        LoginView loginView = new LoginView();
+//        loginView.setVisible(true);
+//    }
+//
+//    // Método para abrir a tela de gerenciar favoritos;
+//    private void abrirTelaGerenciarFavoritos() {
+//        // Crie uma instância da tela de gerenciar favoritos e torne-a visível
+//        GerenciarFavoritosView favoritosView = new GerenciarFavoritosView();
+//        favoritosView.setVisible(true);
+//    }
 
-    private void abrirTelaGerenciarFavoritos() {
-        JOptionPane.showMessageDialog(this, "Abrir Tela Gerenciar Favoritos (a implementar)");
-    }
-
-    // Método principal para rodar a aplicação
+    // Método principal para testar a tela
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new MenuPrincipal().setVisible(true);
-        });
+        SwingUtilities.invokeLater(() -> new MenuPrincipal().setVisible(true));
     }
 }
