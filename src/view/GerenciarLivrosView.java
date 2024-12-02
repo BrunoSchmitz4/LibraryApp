@@ -12,6 +12,7 @@ public class GerenciarLivrosView extends JFrame {
 
     private JTable tabelaLivros;
     private DefaultTableModel tableModel;
+    private boolean exibirFavoritos = false; // Controle para o botão "Exibir Favoritos"
 
     public GerenciarLivrosView() {
         setTitle("Gerenciar Livros");
@@ -24,68 +25,54 @@ public class GerenciarLivrosView extends JFrame {
         carregarLivros();
     }
 
-    // Inicializa os componentes da interface
     private void inicializarComponentes() {
-        // Painel de botões
         JPanel panelBotoes = new JPanel();
         panelBotoes.setLayout(new FlowLayout());
 
-        // Botão para adicionar um livro
         JButton btnAdicionar = new JButton("Adicionar Livro");
-        btnAdicionar.addActionListener(e -> abrirTelaCadastro());
+        btnAdicionar.addActionListener(e -> abrirTelaCadastro(null)); // Adicionar novo livro
         panelBotoes.add(btnAdicionar);
 
-        // Botão para editar um livro
         JButton btnEditar = new JButton("Editar Livro");
         btnEditar.addActionListener(e -> editarLivroSelecionado());
         panelBotoes.add(btnEditar);
 
-        // Botão para excluir um livro
         JButton btnExcluir = new JButton("Excluir Livro");
         btnExcluir.addActionListener(e -> excluirLivroSelecionado());
         panelBotoes.add(btnExcluir);
 
-        // Botão para filtrar favoritos
         JButton btnFavoritos = new JButton("Exibir Favoritos");
-        btnFavoritos.addActionListener(e -> exibirFavoritos());
+        btnFavoritos.addActionListener(e -> alternarFavoritos(btnFavoritos));
         panelBotoes.add(btnFavoritos);
 
-        // Adiciona o painel de botões à parte inferior da janela
         add(panelBotoes, BorderLayout.SOUTH);
 
-        // Configura a tabela de livros
         configurarTabela();
         JScrollPane scrollPane = new JScrollPane(tabelaLivros);
         add(scrollPane, BorderLayout.CENTER);
     }
 
-    // Configura a tabela para exibir os livros
     private void configurarTabela() {
         tableModel = new DefaultTableModel(
             new Object[]{"ID", "Título", "Autor", "Gênero", "Classificação", "Favorito"}, 0
         ) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 5; // Permite edição apenas na coluna "Favorito"
+                return column == 5; // Apenas a coluna "Favorito" é editável
             }
 
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 5) {
-                    return Boolean.class; // A coluna "Favorito" será exibida como checkbox
-                }
-                return String.class;
+                return columnIndex == 5 ? Boolean.class : String.class;
             }
         };
 
         tabelaLivros = new JTable(tableModel);
-
-        // Listener para atualização do favorito
         tabelaLivros.getModel().addTableModelListener(e -> {
             int row = e.getFirstRow();
             int column = e.getColumn();
 
-            if (column == 5) { // Coluna "Favorito"
+            if (column == 5) { // Atualizar status de favorito
                 int livroId = (int) tableModel.getValueAt(row, 0);
                 boolean favorito = (boolean) tableModel.getValueAt(row, 5);
 
@@ -95,16 +82,14 @@ public class GerenciarLivrosView extends JFrame {
         });
     }
 
-    // Carrega todos os livros no banco de dados
-    private void carregarLivros() {
+    public void carregarLivros() {
         LivroDAO livroDAO = new LivroDAO();
         List<Livro> livros = livroDAO.findAll();
         atualizarTabela(livros);
     }
 
-    // Atualiza os dados na tabela
     private void atualizarTabela(List<Livro> livros) {
-        tableModel.setRowCount(0); // Limpa a tabela
+        tableModel.setRowCount(0);
 
         for (Livro livro : livros) {
             tableModel.addRow(new Object[]{
@@ -113,18 +98,17 @@ public class GerenciarLivrosView extends JFrame {
                 livro.getAutor(),
                 livro.getGeneroLiterario(),
                 livro.getClassificacao(),
-                livro.isFavorito() // Status de favorito
+                livro.isFavorito()
             });
         }
     }
 
-    // Abre a tela de cadastro de livros
-    private void abrirTelaCadastro() {
-        // Implemente a abertura da tela de cadastro
-        JOptionPane.showMessageDialog(this, "Funcionalidade de cadastro ainda não implementada.");
+    private void abrirTelaCadastro(Livro livroParaEditar) {
+        CadastroLivroView telaCadastro = new CadastroLivroView(this, livroParaEditar);
+        telaCadastro.setVisible(true);
+        carregarLivros(); // Atualizar a tabela após adicionar/editar um livro
     }
 
-    // Edita o livro selecionado
     private void editarLivroSelecionado() {
         int selectedRow = tabelaLivros.getSelectedRow();
         if (selectedRow == -1) {
@@ -133,10 +117,16 @@ public class GerenciarLivrosView extends JFrame {
         }
 
         int livroId = (int) tableModel.getValueAt(selectedRow, 0);
-        JOptionPane.showMessageDialog(this, "Funcionalidade de edição ainda não implementada para o livro ID: " + livroId);
+        LivroDAO livroDAO = new LivroDAO();
+        Livro livro = livroDAO.findById(livroId);
+
+        if (livro != null) {
+            abrirTelaCadastro(livro);
+        } else {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar dados do livro.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
-    // Exclui o livro selecionado
     private void excluirLivroSelecionado() {
         int selectedRow = tabelaLivros.getSelectedRow();
         if (selectedRow == -1) {
@@ -149,25 +139,26 @@ public class GerenciarLivrosView extends JFrame {
         int confirm = JOptionPane.showConfirmDialog(this, "Deseja realmente excluir este livro?", "Confirmação", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             LivroDAO livroDAO = new LivroDAO();
-            boolean sucesso = livroDAO.delete(livroId);
-            if (sucesso) {
-                JOptionPane.showMessageDialog(this, "Livro excluído com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-                carregarLivros(); // Recarrega os livros após a exclusão
-            } else {
-                JOptionPane.showMessageDialog(this, "Erro ao excluir o livro. Tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
-            }
+            livroDAO.delete(livroId);
+            carregarLivros();
         }
     }
 
-
-    // Exibe apenas os livros favoritos
-    private void exibirFavoritos() {
+    private void alternarFavoritos(JButton btnFavoritos) {
         LivroDAO livroDAO = new LivroDAO();
-        List<Livro> favoritos = livroDAO.findFavoritos();
-        atualizarTabela(favoritos);
+
+        if (!exibirFavoritos) {
+            List<Livro> favoritos = livroDAO.findFavoritos();
+            atualizarTabela(favoritos);
+            btnFavoritos.setText("Exibir Todos");
+        } else {
+            carregarLivros();
+            btnFavoritos.setText("Exibir Favoritos");
+        }
+
+        exibirFavoritos = !exibirFavoritos;
     }
 
-    // Método principal para testar a tela
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new GerenciarLivrosView().setVisible(true));
     }

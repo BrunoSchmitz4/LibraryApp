@@ -1,31 +1,49 @@
 package view;
 
+import dao.GeneroLiterarioDAO;
 import dao.LivroDAO;
 import models.Livro;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import models.GeneroLiterario;
 
-public class CadastroLivroView extends JFrame {
+public class CadastroLivroView extends JDialog {
 
     private JTextField txtTitulo;
     private JTextField txtAutor;
-    private JTextField txtGeneroLiterario;
+    private JComboBox<GeneroLiterario> comboGenero;
     private JTextField txtClassificacao;
-    private JTextField txtImagem;
+    private JButton btnSalvar;
+
+    private Livro livroEditando; // Livro em edição (null se for novo)
+    private GerenciarLivrosView janelaPrincipal;
     private JCheckBox chkFavorito;
 
-    public CadastroLivroView() {
-        setTitle("Cadastrar Livro");
-        setSize(400, 400);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setLayout(new GridLayout(7, 2, 10, 10)); // Layout com 7 linhas e 2 colunas
+    private JLabel lblImagem;
+    private JButton btnSelecionarImagem;
+    private String imagemSelecionada;
+    
+    public CadastroLivroView(GerenciarLivrosView parent, Livro livroParaEditar) {
+        super(parent, "Cadastro de Livro", true);
+        this.janelaPrincipal = parent;
+        this.livroEditando = livroParaEditar;
+
+        setSize(400, 300);
+        setLocationRelativeTo(parent);
+        setLayout(new GridLayout(5, 2));
 
         inicializarComponentes();
+        if (livroParaEditar != null) {
+            carregarDadosParaEdicao(livroParaEditar);
+        }
     }
 
-    // Inicializa os componentes da interface
     private void inicializarComponentes() {
         JLabel lblTitulo = new JLabel("Título:");
         txtTitulo = new JTextField();
@@ -37,78 +55,98 @@ public class CadastroLivroView extends JFrame {
         add(lblAutor);
         add(txtAutor);
 
-        JLabel lblGeneroLiterario = new JLabel("Gênero Literário (ID):");
-        txtGeneroLiterario = new JTextField();
-        add(lblGeneroLiterario);
-        add(txtGeneroLiterario);
+        JLabel lblGenero = new JLabel("Gênero:");
+        comboGenero = new JComboBox<>();
+        popularComboGenero(); // Chama o método para preencher o combo
+        add(lblGenero);
+        add(comboGenero);
 
         JLabel lblClassificacao = new JLabel("Classificação:");
         txtClassificacao = new JTextField();
         add(lblClassificacao);
         add(txtClassificacao);
 
-        JLabel lblImagem = new JLabel("URL da Imagem:");
-        txtImagem = new JTextField();
-        add(lblImagem);
-        add(txtImagem);
-
         JLabel lblFavorito = new JLabel("Favorito:");
         chkFavorito = new JCheckBox();
         add(lblFavorito);
         add(chkFavorito);
 
-        // Botão para salvar o livro
-        JButton btnSalvar = new JButton("Salvar");
-        btnSalvar.addActionListener(e -> salvarLivro());
+        btnSalvar = new JButton("Salvar");
+        btnSalvar.addActionListener(this::salvarLivro);
+        add(new JLabel()); // Espaço vazio
         add(btnSalvar);
+        
+        JLabel lblImagemTexto = new JLabel("Imagem:");
+        
+        lblImagem = new JLabel();
+        lblImagem.setPreferredSize(new Dimension(100, 100));
+        lblImagem.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        add(lblImagemTexto);
+        add(lblImagem);
 
-        // Botão para cancelar o cadastro
-        JButton btnCancelar = new JButton("Cancelar");
-        btnCancelar.addActionListener(e -> dispose()); // Fecha a janela
-        add(btnCancelar);
+        btnSelecionarImagem = new JButton("Selecionar Imagem");
+        btnSelecionarImagem.addActionListener(e -> selecionarImagem());
+        add(new JLabel()); // Espaço vazio
+        add(btnSelecionarImagem);
     }
+    
+    private void selecionarImagem() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Imagens", "jpg", "png", "jpeg"));
 
-    // Salva o livro no banco de dados
-    private void salvarLivro() {
-        try {
-            String titulo = txtTitulo.getText();
-            String autor = txtAutor.getText();
-            int generoLiterario = Integer.parseInt(txtGeneroLiterario.getText());
-            int classificacao = Integer.parseInt(txtClassificacao.getText());
-            String imagem = txtImagem.getText();
-            boolean favorito = chkFavorito.isSelected();
-
-            // Validações simples
-            if (titulo.isEmpty() || autor.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Preencha todos os campos obrigatórios!", "Erro", JOptionPane.WARNING_MESSAGE);
-                return;
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File imagem = fileChooser.getSelectedFile();
+            try {
+                imagemSelecionada = Files.readString(imagem.toPath());
+                ImageIcon icon = new ImageIcon(new ImageIcon(imagemSelecionada).getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+                lblImagem.setIcon(icon);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "Erro ao carregar imagem: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
-
-            // Cria o objeto Livro
-            Livro livro = new Livro();
-            livro.setTitulo(titulo);
-            livro.setAutor(autor);
-            livro.setGeneroLiterario(generoLiterario);
-            livro.setClassificacao(classificacao);
-            livro.setImagem(imagem);
-            livro.setFavorito(favorito);
-
-            // Salva o livro no banco de dados
-            LivroDAO livroDAO = new LivroDAO();
-            livroDAO.insert(livro);
-
-            JOptionPane.showMessageDialog(this, "Livro cadastrado com sucesso!");
-            dispose(); // Fecha a janela após o cadastro
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Classificação e Gênero Literário devem ser números válidos!", "Erro", JOptionPane.ERROR_MESSAGE);
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Ocorreu um erro ao cadastrar o livro.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    // Método principal para teste
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new CadastroLivroView().setVisible(true));
+    private void carregarDadosParaEdicao(Livro livro) {
+        txtTitulo.setText(livro.getTitulo());
+        txtAutor.setText(livro.getAutor());
+        comboGenero.setSelectedItem(livro.getGeneroLiterario()); // Seleciona o gênero pelo nome
+        txtClassificacao.setText(String.valueOf(livro.getClassificacao())); // Converte para String
+        chkFavorito.setSelected(livro.isFavorito()); 
     }
+
+    private void salvarLivro(ActionEvent e) {
+        try {
+            Livro livro = livroEditando != null ? livroEditando : new Livro();
+            livro.setTitulo(txtTitulo.getText());
+            livro.setAutor(txtAutor.getText());
+            livro.setGeneroLiterario(((GeneroLiterario) comboGenero.getSelectedItem()).getId()); // Pega o ID do gênero
+            livro.setClassificacao(Integer.parseInt(txtClassificacao.getText()));
+            livro.setFavorito(chkFavorito.isSelected());
+            livro.setImagem(imagemSelecionada);
+            
+            LivroDAO livroDAO = new LivroDAO();
+            livroDAO.save(livro);
+
+            JOptionPane.showMessageDialog(this, "Livro salvo com sucesso!");
+            if (janelaPrincipal != null) {
+                janelaPrincipal.carregarLivros();
+            }
+            dispose();
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao salvar livro: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    
+    private void popularComboGenero() {
+        GeneroLiterarioDAO generoDAO = new GeneroLiterarioDAO();
+        for (GeneroLiterario genero : generoDAO.findAll()) {
+            comboGenero.addItem(genero); // Adiciona o objeto GeneroLiterario
+        }
+}
+
+
+
 }

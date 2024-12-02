@@ -115,6 +115,34 @@ public class LivroDAO {
             e.printStackTrace();
         }
     }
+
+    public Livro findById(int id) {
+        Livro livro = null;
+        String sql = "SELECT * FROM livro WHERE id = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                livro = new Livro();
+                livro.setId(rs.getInt("id"));
+                    livro.setTitulo(rs.getString("titulo"));
+                    livro.setAutor(rs.getString("autor"));
+                    livro.setGeneroLiterario(rs.getInt("genero_literario_id"));
+                    livro.setClassificacao(rs.getInt("classificacao"));
+                    livro.setImagem(rs.getString("imagem"));
+                    livro.setFavorito(rs.getBoolean("favorito"));
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar livro por ID: " + e.getMessage());
+        }
+
+        return livro;
+    }
+
     
     public List<Livro> findByGenero(int generoId) {
         List<Livro> livros = new ArrayList<>();
@@ -165,4 +193,16 @@ public class LivroDAO {
             e.printStackTrace();
         }
     }
+    
+    
+    public void save(Livro livro) {
+    if (livro.getId() == 0) {
+        // Livro novo (insert)
+        insert(livro);
+    } else {
+        // Livro existente (update)
+        update(livro);
+    }
+}
+
 }

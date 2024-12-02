@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import view.GerenciarLivrosView;
+import com.formdev.flatlaf.FlatLightLaf;
+
 
 public class MenuPrincipal extends JFrame {
 
@@ -32,7 +34,7 @@ public class MenuPrincipal extends JFrame {
 //        JButton btnLogin = new JButton("Login de Usuários");
 //        JButton btnFavoritos = new JButton("Gerenciar Favoritos");
         JButton btnSair = new JButton("Sair");
-
+        
         // Adicionando os botões ao painel
         panel.add(btnGerenciarLivros);
         panel.add(btnGerenciarGeneros);
@@ -51,6 +53,10 @@ public class MenuPrincipal extends JFrame {
 //        btnLogin.addActionListener(e -> abrirTelaLogin());
 //        btnFavoritos.addActionListener(e -> abrirTelaGerenciarFavoritos());
         btnSair.addActionListener(e -> System.exit(0));
+        
+        btnGerenciarLivros.setIcon(new ImageIcon("icons/books.png"));
+        btnGerenciarGeneros.setIcon(new ImageIcon("icons/genre.png"));
+        btnSair.setIcon(new ImageIcon("icons/exit.png"));
     }
 
     // Métodos para abrir outras telas (a implementar)
@@ -86,6 +92,15 @@ public class MenuPrincipal extends JFrame {
 
     // Método principal para testar a tela
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new MenuPrincipal().setVisible(true));
+        try {
+            UIManager.setLookAndFeel(new FlatLightLaf());
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            MenuPrincipal frame = new MenuPrincipal();
+            frame.setVisible(true);
+        });
     }
 }

@@ -6,6 +6,7 @@ import models.Usuario;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import com.formdev.flatlaf.FlatLightLaf;
 
 public class LoginView extends JFrame {
 
@@ -69,5 +70,15 @@ public class LoginView extends JFrame {
     // Método principal para teste
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new LoginView().setVisible(true));
+        try {
+            UIManager.setLookAndFeel(new FlatLightLaf());
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            LoginView frame = new LoginView();
+            frame.setVisible(true);
+        });
     }
 }
