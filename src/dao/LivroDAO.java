@@ -74,7 +74,7 @@ public class LivroDAO {
     }
 
     private boolean tituloExiste(String titulo) {
-        String sql = "SELECT COUNT(*) FROM livro WHERE titulo = ?";
+        String sql = "SELECT COUNT(*) FROM livro WHERE titulo = ? order by id desc";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, titulo);
             ResultSet rs = stmt.executeQuery();
@@ -88,7 +88,7 @@ public class LivroDAO {
     }
 
     private boolean generoExiste(int generoId) {
-        String sql = "SELECT COUNT(*) FROM genero_literario WHERE id = ?";
+        String sql = "SELECT COUNT(*) FROM genero_literario WHERE id = ? order by id desc";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, generoId);
             ResultSet rs = stmt.executeQuery();
@@ -125,7 +125,7 @@ public class LivroDAO {
     
     public List<Livro> findAll() {
         List<Livro> livros = new ArrayList<>();
-        String sql = "SELECT * FROM livro";
+        String sql = "select * from livro order by id desc";
         try (PreparedStatement stmt = connection.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
@@ -138,7 +138,7 @@ public class LivroDAO {
     }
 
     public Livro findById(int id) {
-        String sql = "SELECT * FROM livro WHERE id = ?";
+        String sql = "SELECT * FROM livro WHERE id = ? order by id desc";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -163,7 +163,7 @@ public class LivroDAO {
 
     public List<Livro> findFavoritos() {
         List<Livro> favoritos = new ArrayList<>();
-        String sql = "SELECT * FROM livro WHERE favorito = true";
+        String sql = "SELECT * FROM livro WHERE favorito = true order by id desc";
         try (PreparedStatement stmt = connection.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
@@ -176,7 +176,7 @@ public class LivroDAO {
     }
     
     public int countByGenero(int idGenero) {
-        String sql = "SELECT COUNT(*) FROM livro WHERE genero_literario_id = ?";
+        String sql = "SELECT COUNT(*) FROM livro WHERE genero_literario_id = ? order by id desc";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, idGenero);
             ResultSet rs = stmt.executeQuery();
@@ -192,7 +192,7 @@ public class LivroDAO {
     
     public List<Livro> findByGenero(int generoId) {
         List<Livro> livros = new ArrayList<>();
-        String sql = "SELECT * FROM livro WHERE genero_literario_id = ?";
+        String sql = "SELECT * FROM livro WHERE genero_literario_id = ? order by id desc";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, generoId);
             ResultSet rs = stmt.executeQuery();

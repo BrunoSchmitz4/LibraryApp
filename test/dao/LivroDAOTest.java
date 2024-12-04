@@ -105,10 +105,10 @@ public class LivroDAOTest {
         assertEquals("Já existe um livro com o mesmo título.", resultado);
     }
     
-    //    Autor: Bruno
+    //    Autor: Bruno e Tiffani
     @Test
     public void testAdicionarLivroComSucesso() {
-        Livro livro = new Livro("Título Válido", "Autor Válido", "https://imagem-teste.jpeg", 1, 5, "https://imagem-teste.jpeg", new java.util.Date());
+        Livro livro = new Livro("Título Válido 2", "Autor Válido", "https://imagem-teste.jpeg", 1, 5, "https://imagem-teste.jpeg", new java.util.Date());
         String resultado = livroDAO.adicionarLivro(livro);
 
         assertEquals("Livro adicionado com sucesso!", resultado);
