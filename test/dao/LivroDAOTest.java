@@ -217,8 +217,27 @@ public class LivroDAOTest {
         // Verifica se o livro não foi adicionado com sucesso
         assertNotEquals("Livro adicionado com sucesso!", resultado);
     }
+    
+    // Autora: Tiffani
+    @Test
+    public void testAdicionarLivroSemAutor() {
+        try {
+            livroDAO = new LivroDAO(TestConnection.getConnection());
+            Livro livro = new Livro();
+            livro.setTitulo("Chapeuzinho Vermelho");
+            livro.setAutor("");
+            livro.setGeneroLiterario(2);
+            livro.setClassificacao(5);
+            livro.setImagem("https://exemplo.com/imagem.jpg");
+            livro.setFavorito(false);
+            livro.setDataLeitura(new Date());
+            
+            String resultado = livroDAO.adicionarLivro(livro);
+            
+            assertNotEquals("Livro adicionado com sucesso!", resultado);
+            assertTrue(resultado.contains("O autor não pode ser vazio."));
 
-
-
-
+        } catch (Exception e) {
+        }
+    }
 }

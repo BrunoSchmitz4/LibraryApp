@@ -47,6 +47,9 @@ public class LivroDAO {
         if (livro.getAutor().length() > 150) {
             return "A autoria deve ter no máximo 150 caracteres.";
         }
+        if (livro.getAutor() == null || livro.getAutor().isEmpty()) {
+            return "O autor não pode ser vazio.";
+        }
 
         String sql = "INSERT INTO livro (titulo, autor, genero_literario_id, classificacao, imagem, favorito, data_leitura) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
