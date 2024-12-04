@@ -69,7 +69,7 @@ public class LoginView extends JFrame {
 
     // Método principal para teste
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new LoginView().setVisible(true));
+//        SwingUtilities.invokeLater(() -> new LoginView().setVisible(true));
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());
         } catch (UnsupportedLookAndFeelException e) {

@@ -3,9 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/view/GerenciarLivrosView.java</file>
             <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/view/CadastroLivroView.java</file>
+            <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/view/GerenciarLivrosView.java</file>
             <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/dao/LivroDAO.java</file>
+            <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/models/Livro.java</file>
+            <file>file:/C:/Users/bruno/Desenvolvimento/Desenvolvimento%20Backend/Desenvolvimento%20java/Organo-App/LibraryApp/src/view/ListarLivrosPorGeneroView.java</file>
         </group>
     </open-files>
 </project-private>

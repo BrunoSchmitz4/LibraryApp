@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Date;
+
 public class Livro {
     private int id;
     private String titulo;
@@ -8,12 +10,24 @@ public class Livro {
     private int classificacao;
     private String imagem;
     private boolean favorito; // Indica se o livro é favoritado
+    private Date dataLeitura; // Nova propriedade para data de leitura
 
     // Construtor padrão
     public Livro() {}
 
-    // Construtor completo
-    public Livro(int id, String titulo, String autor, int generoLiterario, int classificacao, String imagem, boolean favorito) {
+    // Construtor usado nos testes
+    public Livro(String titulo, String autor, String imagem, int generoLiterario, int classificacao, String imagemLink, Date dataLeitura) {
+        this.titulo = titulo;
+        this.autor = autor;
+        this.generoLiterario = generoLiterario;
+        this.classificacao = classificacao;
+        this.imagem = imagem;
+        this.favorito = false; // Definido como padrão para falso
+        this.dataLeitura = dataLeitura;
+    }
+
+    // Construtor completo (existe também caso você queira usar outros construtores)
+    public Livro(int id, String titulo, String autor, int generoLiterario, int classificacao, String imagem, boolean favorito, Date dataLeitura) {
         this.id = id;
         this.titulo = titulo;
         this.autor = autor;
@@ -21,6 +35,7 @@ public class Livro {
         this.classificacao = classificacao;
         this.imagem = imagem;
         this.favorito = favorito;
+        this.dataLeitura = dataLeitura;
     }
 
     // Getters e Setters
@@ -78,5 +93,20 @@ public class Livro {
 
     public void setFavorito(boolean favorito) {
         this.favorito = favorito;
+    }
+
+   // Método para obter a data de leitura
+    public Date getDataLeitura() {
+        return dataLeitura;
+    }
+
+    // Método para definir a data de leitura
+    public void setDataLeitura(Date dataLeitura) {
+        this.dataLeitura = dataLeitura;
+    }
+
+    // Método para verificar se a data de leitura é válida (não maior que a data atual)
+    public boolean isDataLeituraValida() {
+        return dataLeitura != null && !dataLeitura.after(new Date());
     }
 }
