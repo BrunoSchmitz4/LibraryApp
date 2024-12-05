@@ -31,16 +31,20 @@ public class GeneroLiterarioDAO {
     }
 
     public void update(GeneroLiterario genero) {
-        validateGenero(genero);
-
-        try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
-            stmt.setString(1, genero.getNome());
-            stmt.setInt(2, genero.getId());
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Erro ao atualizar o gênero literário: " + e.getMessage(), e);
-        }
+    if (genero.getNome() == null || genero.getNome().trim().isEmpty()) {
+        throw new RuntimeException("O nome do gênero literário não pode estar vazio");
     }
+
+    String sql = "UPDATE generos_literarios SET nome = ? WHERE id = ?";
+    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+        stmt.setString(1, genero.getNome());
+        stmt.setInt(2, genero.getId());
+        stmt.executeUpdate();
+    } catch (SQLException e) {
+        throw new RuntimeException("Erro ao atualizar o gênero literário: " + e.getMessage(), e);
+    }
+}
+
 
     public void delete(int id) {
         try (PreparedStatement stmt = connection.prepareStatement(DELETE)) {

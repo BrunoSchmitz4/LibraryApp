@@ -16,7 +16,7 @@ public class GerenciarGenerosView extends JFrame {
     private JTable tabelaGeneros;
     private DefaultTableModel tableModel;
     private Connection connection;
-    
+
     public GerenciarGenerosView() {
         this.connection = ConnectionFactory.getConnection();
         setTitle("Gerenciar Gêneros Literários");
@@ -56,7 +56,7 @@ public class GerenciarGenerosView extends JFrame {
     }
 
     private void carregarGeneros() {
-        tableModel.setRowCount(0); // Limpa a tabela
+        tableModel.setRowCount(0);
         GeneroLiterarioDAO generoDAO = new GeneroLiterarioDAO(connection);
         List<GeneroLiterario> generos = generoDAO.findAll();
 
@@ -76,6 +76,8 @@ public class GerenciarGenerosView extends JFrame {
             generoDAO.create(genero);
             carregarGeneros();
             JOptionPane.showMessageDialog(this, "Gênero cadastrado com sucesso!");
+        } else {
+            JOptionPane.showMessageDialog(this, "O nome do gênero literário não pode estar vazio.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -91,15 +93,20 @@ public class GerenciarGenerosView extends JFrame {
 
         String novoNome = JOptionPane.showInputDialog(this, "Editar nome do gênero:", nomeAtual);
         if (novoNome != null && !novoNome.trim().isEmpty()) {
-            GeneroLiterarioDAO generoDAO = new GeneroLiterarioDAO(connection);
-            GeneroLiterario genero = new GeneroLiterario(id, novoNome);
-            generoDAO.update(genero);
-            carregarGeneros();
-            JOptionPane.showMessageDialog(this, "Gênero atualizado com sucesso!");
+            try {
+                GeneroLiterarioDAO generoDAO = new GeneroLiterarioDAO(connection);
+                GeneroLiterario genero = new GeneroLiterario(id, novoNome);
+                generoDAO.update(genero);
+                carregarGeneros();
+                JOptionPane.showMessageDialog(this, "Gênero atualizado com sucesso!");
+            } catch (RuntimeException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "O nome do gênero literário não pode estar vazio.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    // Método para excluir o gênero selecionado
     private void excluirGenero() {
         int selectedRow = tabelaGeneros.getSelectedRow();
         if (selectedRow == -1) {
@@ -118,7 +125,6 @@ public class GerenciarGenerosView extends JFrame {
         }
     }
 
-    // Método principal para testes isolados
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new GerenciarGenerosView().setVisible(true);

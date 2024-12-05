@@ -36,6 +36,23 @@ public class GeneroLiterarioDAOTest {
         }
     }
     
+    // Autor: Bruno
+    @Test
+    public void testAtualizarGeneroComNomeVazio() {
+        GeneroLiterario genero = new GeneroLiterario();
+        genero.setNome("Romance");
+        generoDAO.create(genero);
+
+        genero.setNome("");
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            generoDAO.update(genero);
+        });
+
+        assertEquals("O nome do gênero literário não pode estar vazio", exception.getMessage());
+    }
+
+    
 //    Autora: Tiffani
     @Test
     public void testAdicionarGeneroLiterario() {
