@@ -18,44 +18,43 @@ public class GerenciarGenerosView extends JFrame {
     private Connection connection;
     
     public GerenciarGenerosView() {
-    this.connection = ConnectionFactory.getConnection(); // Inicializa a conexão
-    setTitle("Gerenciar Gêneros Literários");
-    setSize(600, 300);
-    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    setLocationRelativeTo(null);
+        this.connection = ConnectionFactory.getConnection();
+        setTitle("Gerenciar Gêneros Literários");
+        setSize(600, 300);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
 
-    setLayout(new BorderLayout());
-    tabelaGeneros = new JTable();
-    tableModel = new DefaultTableModel(
-        new Object[]{"ID", "Nome"}, 0
-    );
-    tabelaGeneros.setModel(tableModel);
+        setLayout(new BorderLayout());
+        tabelaGeneros = new JTable();
+        tableModel = new DefaultTableModel(
+            new Object[]{"ID", "Nome"}, 0
+        );
+        tabelaGeneros.setModel(tableModel);
 
-    JScrollPane scrollPane = new JScrollPane(tabelaGeneros);
-    add(scrollPane, BorderLayout.CENTER);
+        JScrollPane scrollPane = new JScrollPane(tabelaGeneros);
+        add(scrollPane, BorderLayout.CENTER);
 
-    JPanel panelBotoes = new JPanel();
-    JButton btnAdicionar = new JButton("Adicionar Novo");
-    JButton btnEditar = new JButton("Editar");
-    JButton btnExcluir = new JButton("Excluir");
-    JButton btnAtualizar = new JButton("Atualizar");
+        JPanel panelBotoes = new JPanel();
+        JButton btnAdicionar = new JButton("Adicionar Novo");
+        JButton btnEditar = new JButton("Editar");
+        JButton btnExcluir = new JButton("Excluir");
+        JButton btnAtualizar = new JButton("Atualizar");
 
-    panelBotoes.add(btnAdicionar);
-    panelBotoes.add(btnEditar);
-    panelBotoes.add(btnExcluir);
-    panelBotoes.add(btnAtualizar);
+        panelBotoes.add(btnAdicionar);
+        panelBotoes.add(btnEditar);
+        panelBotoes.add(btnExcluir);
+        panelBotoes.add(btnAtualizar);
 
-    add(panelBotoes, BorderLayout.SOUTH);
+        add(panelBotoes, BorderLayout.SOUTH);
 
-    btnAdicionar.addActionListener(e -> abrirTelaCadastro());
-    btnEditar.addActionListener(e -> editarGenero());
-    btnExcluir.addActionListener(e -> excluirGenero());
-    btnAtualizar.addActionListener(e -> carregarGeneros());
+        btnAdicionar.addActionListener(e -> abrirTelaCadastro());
+        btnEditar.addActionListener(e -> editarGenero());
+        btnExcluir.addActionListener(e -> excluirGenero());
+        btnAtualizar.addActionListener(e -> carregarGeneros());
 
-    carregarGeneros();
-}
+        carregarGeneros();
+    }
 
-    // Método para carregar os gêneros na tabela
     private void carregarGeneros() {
         tableModel.setRowCount(0); // Limpa a tabela
         GeneroLiterarioDAO generoDAO = new GeneroLiterarioDAO(connection);
@@ -69,7 +68,6 @@ public class GerenciarGenerosView extends JFrame {
         }
     }
 
-    // Método para abrir a tela de cadastro
     private void abrirTelaCadastro() {
         String nome = JOptionPane.showInputDialog(this, "Digite o nome do gênero literário:");
         if (nome != null && !nome.trim().isEmpty()) {
@@ -81,7 +79,6 @@ public class GerenciarGenerosView extends JFrame {
         }
     }
 
-    // Método para editar o gênero selecionado
     private void editarGenero() {
         int selectedRow = tabelaGeneros.getSelectedRow();
         if (selectedRow == -1) {

@@ -101,8 +101,6 @@ public class LivroDAO {
         return false;
     }
 
-
-    // Atualiza um livro existente
     public void update(Livro livro) {
         String sql = "UPDATE livro SET titulo = ?, autor = ?, genero_literario_id = ?, classificacao = ?, imagem = ?, favorito = ? WHERE id = ?";
 

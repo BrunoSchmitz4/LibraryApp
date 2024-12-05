@@ -9,7 +9,6 @@ public class UsuarioDAO {
     private static final String INSERT = "INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?)";
     private static final String FIND_BY_EMAIL = "SELECT * FROM usuario WHERE email = ?";
 
-    // Criar um novo usuário
     public void create(Usuario usuario) {
         try (Connection connection = ConnectionFactory.getConnection();
              PreparedStatement stmt = connection.prepareStatement(INSERT)) {
@@ -22,7 +21,6 @@ public class UsuarioDAO {
         }
     }
 
-    // Buscar usuário por email
     public Usuario findByEmail(String email) {
         try (Connection connection = ConnectionFactory.getConnection();
              PreparedStatement stmt = connection.prepareStatement(FIND_BY_EMAIL)) {

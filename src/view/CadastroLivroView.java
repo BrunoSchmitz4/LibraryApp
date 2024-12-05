@@ -24,7 +24,7 @@ public class CadastroLivroView extends JDialog {
     private JTextField txtClassificacao;
     private JTextField txtImagemLink;
     private JCheckBox chkFavorito;
-    private JSpinner spinnerDataLeitura; // Usaremos o JSpinner para datas
+    private JSpinner spinnerDataLeitura;
     private JButton btnSalvar;
 
     private Livro livroEditando;
@@ -50,7 +50,6 @@ public class CadastroLivroView extends JDialog {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Título do livro
         JLabel lblTitulo = new JLabel("Título:");
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -63,7 +62,6 @@ public class CadastroLivroView extends JDialog {
         gbc.gridwidth = 2;
         add(txtTitulo, gbc);
 
-        // Autor
         JLabel lblAutor = new JLabel("Autor:");
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -76,7 +74,6 @@ public class CadastroLivroView extends JDialog {
         gbc.gridwidth = 2;
         add(txtAutor, gbc);
 
-        // Gênero
         JLabel lblGenero = new JLabel("Gênero:");
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -90,7 +87,6 @@ public class CadastroLivroView extends JDialog {
         gbc.gridwidth = 2;
         add(comboGenero, gbc);
 
-        // Classificação
         JLabel lblClassificacao = new JLabel("Classificação:");
         gbc.gridx = 0;
         gbc.gridy = 3;
@@ -103,7 +99,6 @@ public class CadastroLivroView extends JDialog {
         gbc.gridwidth = 2;
         add(txtClassificacao, gbc);
 
-        // Link da imagem
         JLabel lblImagemLink = new JLabel("Link da Imagem:");
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -116,14 +111,12 @@ public class CadastroLivroView extends JDialog {
         gbc.gridwidth = 2;
         add(txtImagemLink, gbc);
 
-        // Data de leitura
         JLabel lblDataLeitura = new JLabel("Data de Leitura:");
         gbc.gridx = 0;
         gbc.gridy = 5;
         gbc.gridwidth = 1;
         add(lblDataLeitura, gbc);
 
-        // Configurando o JSpinner para datas
         SpinnerDateModel dateModel = new SpinnerDateModel();
         spinnerDataLeitura = new JSpinner(dateModel);
         JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(spinnerDataLeitura, "dd/MM/yyyy");
@@ -146,7 +139,6 @@ public class CadastroLivroView extends JDialog {
         gbc.gridwidth = 2;
         add(chkFavorito, gbc);
 
-        // Botão salvar
         btnSalvar = new JButton("Salvar");
         btnSalvar.addActionListener(this::salvarLivro);
         gbc.gridx = 0;
@@ -156,49 +148,45 @@ public class CadastroLivroView extends JDialog {
     }
 
     private void salvarLivro(ActionEvent e) {
-    try {
-        // Obtendo a data de leitura do JSpinner
-        Date dataLeitura = (Date) spinnerDataLeitura.getValue();
-        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-        formato.setLenient(false); // Garante que apenas datas estritamente válidas sejam aceitas
-        
-        // Verifica se a data de leitura é válida
-        String dataStr = formato.format(dataLeitura);
         try {
-            formato.parse(dataStr); // Tenta parsear a data para validar o formato
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Data de leitura está em um formato inválido. Use o formato dd/MM/yyyy.", "Erro", JOptionPane.ERROR_MESSAGE);
-            return; // Interrompe a execução se o formato for inválido
-        }
+            Date dataLeitura = (Date) spinnerDataLeitura.getValue();
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+            formato.setLenient(false);
 
-        Livro livro = livroEditando != null ? livroEditando : new Livro();
-        livro.setTitulo(txtTitulo.getText());
-        livro.setAutor(txtAutor.getText());
-        livro.setGeneroLiterario(((GeneroLiterario) comboGenero.getSelectedItem()).getId());
-        livro.setClassificacao(Integer.parseInt(txtClassificacao.getText()));
-        livro.setFavorito(chkFavorito.isSelected());
-        livro.setImagem(txtImagemLink.getText());
-        livro.setDataLeitura(dataLeitura);
-
-        // Conectar ao banco de dados e salvar o livro usando o DAO
-        Connection connection = ConnectionFactory.getConnection();
-        LivroDAO livroDAO = new LivroDAO(connection);
-        String resultado = livroDAO.adicionarLivro(livro);
-
-        if (resultado.equals("Livro adicionado com sucesso!")) {
-            JOptionPane.showMessageDialog(this, "Livro salvo com sucesso!");
-            if (janelaPrincipal != null) {
-                janelaPrincipal.carregarLivros();
+            String dataStr = formato.format(dataLeitura);
+            try {
+                formato.parse(dataStr);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Data de leitura está em um formato inválido. Use o formato dd/MM/yyyy.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-            dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, resultado, "Erro", JOptionPane.ERROR_MESSAGE);
-        }
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "Erro ao salvar livro: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-    }
-}
 
+            Livro livro = livroEditando != null ? livroEditando : new Livro();
+            livro.setTitulo(txtTitulo.getText());
+            livro.setAutor(txtAutor.getText());
+            livro.setGeneroLiterario(((GeneroLiterario) comboGenero.getSelectedItem()).getId());
+            livro.setClassificacao(Integer.parseInt(txtClassificacao.getText()));
+            livro.setFavorito(chkFavorito.isSelected());
+            livro.setImagem(txtImagemLink.getText());
+            livro.setDataLeitura(dataLeitura);
+
+            Connection connection = ConnectionFactory.getConnection();
+            LivroDAO livroDAO = new LivroDAO(connection);
+            String resultado = livroDAO.adicionarLivro(livro);
+
+            if (resultado.equals("Livro adicionado com sucesso!")) {
+                JOptionPane.showMessageDialog(this, "Livro salvo com sucesso!");
+                if (janelaPrincipal != null) {
+                    janelaPrincipal.carregarLivros();
+                }
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, resultado, "Erro", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Erro ao salvar livro: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     private void popularComboGenero() {
         try {

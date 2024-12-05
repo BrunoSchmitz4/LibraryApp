@@ -7,8 +7,8 @@ import java.sql.SQLException;
 public class ConnectionFactory {
 
     private static final String URL = "jdbc:mysql://localhost:3306/organo-app";
-    private static final String USER = "root"; // Substitua pelo usuário do seu MySQL
-    private static final String PASSWORD = ""; // Substitua pela senha do seu MySQL
+    private static final String USER = "root";
+    private static final String PASSWORD = "";
 
     public static Connection getConnection() {
         try {

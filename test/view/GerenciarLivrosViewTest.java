@@ -41,7 +41,6 @@ public class GerenciarLivrosViewTest {
 
     @After
     public void tearDown() throws Exception {
-        // Limpar a tabela do banco após cada teste
         connection.createStatement().executeUpdate("DELETE FROM livro");
     }
 

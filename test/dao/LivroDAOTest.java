@@ -48,7 +48,7 @@ public class LivroDAOTest {
 
     @Test
     public void testAutoriaMaximo150Caracteres() {
-        String autor = "A".repeat(151); // Cria um autor com 151 caracteres
+        String autor = "A".repeat(151);
         Livro livro = new Livro("Título Teste", autor, "https://imagem-teste.jpeg", 1, 4, "https://imagem-teste.jpeg", new java.util.Date());
         String resultado = livroDAO.adicionarLivro(livro);
 
@@ -115,22 +115,19 @@ public class LivroDAOTest {
     // Autora: Tiffani Candido
     @Test
     public void testLivroAdicionado() {
-        // Criação de um livro para teste
         Livro novoLivro = new Livro(
             "Chapeuzinho vermelho",
             "Irmãos Grimm",
             "https://exemplo.com/imagem.jpg",
-            2, // ID de gênero literário válido
+            2, // ID de gênero literário
             5, // Classificação
             "https://exemplo.com/imagem.jpg",
-            new Date(System.currentTimeMillis()) // Data de leitura válida
+            new Date(System.currentTimeMillis())
         );
 
-        // Adiciona o livro ao banco de dados e verifica a mensagem de retorno
         String resultado = livroDAO.adicionarLivro(novoLivro);
         assertEquals("Livro adicionado com sucesso!", resultado);
 
-        // Verifica se o livro foi adicionado na lista de livros
         List<Livro> livros = livroDAO.findAll();
         assertNotNull(livros);
         assertTrue(
@@ -139,7 +136,6 @@ public class LivroDAOTest {
             )
         );
 
-        // Recupera os detalhes do livro adicionado
         Livro livroDetalhes = livroDAO.findAll().stream()
             .filter(livro -> "Chapeuzinho vermelho".equals(livro.getTitulo()))
             .findFirst()
@@ -156,7 +152,6 @@ public class LivroDAOTest {
 //    Autora: Tiffani
     @Test
     public void testNaoPermitirLivroSemAutor() {
-        // Cria um livro com o campo "autor" vazio
         Livro livro = new Livro(
             "Chapeuzinho vermelho 2",
             "", // Autor vazio
@@ -164,16 +159,13 @@ public class LivroDAOTest {
             2, // ID de gênero literário válido
             5, // Classificação
             "https://exemplo.com/imagem.jpg",
-            new Date(System.currentTimeMillis()) // Data de leitura válida
+            new Date(System.currentTimeMillis())
         );
 
-        // Tenta adicionar o livro e captura a mensagem de erro
         String resultado = livroDAO.adicionarLivro(livro);
 
-        // Verifica se a mensagem de erro é a esperada
         assertEquals("O autor não pode ser vazio.", resultado);
 
-        // Certifica-se de que o livro não foi adicionado
         List<Livro> livros = livroDAO.findAll();
         assertTrue(livros.stream().noneMatch(l -> "Chapeuzinho vermelho 2".equals(l.getTitulo())));
     }
@@ -181,24 +173,20 @@ public class LivroDAOTest {
     // Autora: Tiffani
     @Test
     public void testDataLeituraFormatoInvalido() {
-        // Define um formato de data incorreto (yyyy/MM/dd)
         String dataInvalida = "2023/12/01";
 
-        // Tenta parsear a data no formato desejado e verifica se está no formato correto
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-        formato.setLenient(false); // Garante que apenas datas estritamente válidas sejam aceitas
+        formato.setLenient(false);
         boolean formatoValido;
         try {
-            formato.parse(dataInvalida);// Tenta parsear a data
-            formatoValido = true; // Se não lançar exceção, formato é válido
+            formato.parse(dataInvalida);
+            formatoValido = true;
         } catch (Exception e) {
-            formatoValido = false; // Se lançar exceção, formato é inválido
+            formatoValido = false;
         }
 
-        // Valida que o formato é reconhecido como inválido
         assertFalse(formatoValido);
 
-        // Garante que um livro com uma data de leitura inválida não será salvo no banco
         Livro livro = new Livro(
             "Chapeuzinho Vermelho",
             "Irmãos Grimm",
@@ -206,13 +194,11 @@ public class LivroDAOTest {
             2, // ID de gênero literário válido
             5, // Classificação válida
             "https://exemplo.com/imagem.jpg",
-            null // Data será tratada posteriormente
+            null // Data será tratada só dps
         );
 
-        // Adiciona o livro e captura o resultado
         String resultado = livroDAO.adicionarLivro(livro);
 
-        // Verifica se o livro não foi adicionado com sucesso
         assertNotEquals("Livro adicionado com sucesso!", resultado);
     }
     

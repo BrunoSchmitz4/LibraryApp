@@ -18,7 +18,7 @@ public class GerenciarLivrosView extends JFrame {
 
     public JTable tabelaLivros;
     private DefaultTableModel tableModel;
-    private boolean exibirFavoritos = false; // Controle para o botão "Exibir Favoritos"
+    private boolean exibirFavoritos = false;
 
     public GerenciarLivrosView() {
         setTitle("Gerenciar Livros");
@@ -147,7 +147,7 @@ public class GerenciarLivrosView extends JFrame {
     private void abrirTelaCadastro(Livro livroParaEditar) {
         CadastroLivroView telaCadastro = new CadastroLivroView(this, livroParaEditar);
         telaCadastro.setVisible(true);
-        carregarLivros(); // Atualizar a tabela após adicionar/editar um livro
+        carregarLivros();
     }
 
     private void editarLivroSelecionado() {

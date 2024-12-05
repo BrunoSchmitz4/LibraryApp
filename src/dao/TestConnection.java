@@ -5,11 +5,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class TestConnection {
-    // Método para obter uma conexão
+    
     public static Connection getConnection() throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/organo-app"; // Substitua "seu_banco" pelo nome do banco de dados
-        String username = "root"; // Substitua pelo seu usuário
-        String password = ""; // Substitua pela sua senha
+        String url = "jdbc:mysql://localhost:3306/organo-app";
+        String username = "root";
+        String password = "";
 
         return DriverManager.getConnection(url, username, password);
     }

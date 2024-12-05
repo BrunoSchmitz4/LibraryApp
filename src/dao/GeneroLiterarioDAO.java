@@ -15,12 +15,10 @@ public class GeneroLiterarioDAO {
     private static final String FIND_ALL = "SELECT * FROM genero_literario";
     private static final String FIND_BY_ID = "SELECT * FROM genero_literario WHERE id = ?";
 
-    // Construtor que recebe uma conexão como argumento
     public GeneroLiterarioDAO(Connection connection) {
         this.connection = connection;
     }
 
-    // Criar um novo gênero literário
     public void create(GeneroLiterario genero) {
         validateGenero(genero);
 
@@ -32,7 +30,6 @@ public class GeneroLiterarioDAO {
         }
     }
 
-    // Atualizar um gênero literário existente
     public void update(GeneroLiterario genero) {
         validateGenero(genero);
 
@@ -45,7 +42,6 @@ public class GeneroLiterarioDAO {
         }
     }
 
-    // Excluir um gênero literário pelo ID
     public void delete(int id) {
         try (PreparedStatement stmt = connection.prepareStatement(DELETE)) {
             stmt.setInt(1, id);
@@ -55,7 +51,6 @@ public class GeneroLiterarioDAO {
         }
     }
 
-    // Buscar todos os gêneros literários
     public List<GeneroLiterario> findAll() {
         List<GeneroLiterario> generos = new ArrayList<>();
         try (PreparedStatement stmt = connection.prepareStatement(FIND_ALL);
@@ -72,7 +67,6 @@ public class GeneroLiterarioDAO {
         return generos;
     }
 
-    // Buscar um gênero literário por ID
     public GeneroLiterario findById(int id) {
         try (PreparedStatement stmt = connection.prepareStatement(FIND_BY_ID)) {
             stmt.setInt(1, id);
@@ -90,7 +84,6 @@ public class GeneroLiterarioDAO {
         return null;
     }
 
-    // Validação do gênero literário
     private void validateGenero(GeneroLiterario genero) {
         if (genero.getNome() == null || genero.getNome().trim().isEmpty()) {
             throw new IllegalArgumentException("O nome do gênero literário não pode estar vazio.");

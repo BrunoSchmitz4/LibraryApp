@@ -20,25 +20,20 @@ public class LoginView extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Painel principal
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3, 2, 10, 10));
 
-        // Componentes do formulário
         JLabel lblEmail = new JLabel("E-mail:");
         txtEmail = new JTextField();
         JLabel lblSenha = new JLabel("Senha:");
         txtSenha = new JPasswordField();
 
-        // Botão de login
         JButton btnLogin = new JButton("Entrar");
         btnLogin.addActionListener(this::autenticarUsuario);
 
-        // Botão de criar conta
         JButton btnCriarConta = new JButton("Criar Conta");
         btnCriarConta.addActionListener(e -> abrirCadastroUsuario());
 
-        // Adicionar componentes ao painel
         panel.add(lblEmail);
         panel.add(txtEmail);
         panel.add(lblSenha);
@@ -46,7 +41,6 @@ public class LoginView extends JFrame {
 
         add(panel, BorderLayout.CENTER);
 
-        // Painel inferior com os botões
         JPanel bottomPanel = new JPanel(new GridLayout(1, 2, 10, 10));
         bottomPanel.add(btnLogin);
         bottomPanel.add(btnCriarConta);
@@ -68,30 +62,27 @@ public class LoginView extends JFrame {
     }
 
     private void autenticarUsuario(ActionEvent e) {
-    String email = txtEmail.getText();
-    String senha = new String(txtSenha.getPassword());
+        String email = txtEmail.getText();
+        String senha = new String(txtSenha.getPassword());
 
-    // Verifica se algum campo está vazio
-    if (email.isEmpty() || senha.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Preencha todos os campos.", "Aviso", JOptionPane.WARNING_MESSAGE);
-        return;
+        if (email.isEmpty() || senha.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Preencha todos os campos.", "Aviso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        Usuario usuario = usuarioDAO.autenticar(email, senha);
+
+        if (usuario != null) {
+            JOptionPane.showMessageDialog(this, "Bem-vindo, " + usuario.getNome() + "!");
+            abrirMenuPrincipal();
+        } else {
+            JOptionPane.showMessageDialog(this, "Credenciais inválidas. Tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
-    UsuarioDAO usuarioDAO = new UsuarioDAO();
-    Usuario usuario = usuarioDAO.autenticar(email, senha);
-
-    if (usuario != null) {
-        JOptionPane.showMessageDialog(this, "Bem-vindo, " + usuario.getNome() + "!");
-        abrirMenuPrincipal();
-    } else {
-        JOptionPane.showMessageDialog(this, "Credenciais inválidas. Tente novamente.", "Erro", JOptionPane.ERROR_MESSAGE);
-    }
-}
-
-
-    // Método para abrir a tela de cadastro de usuário
     private void abrirCadastroUsuario() {
-        dispose(); // Fecha a janela de login
+        dispose();
         SwingUtilities.invokeLater(() -> new CadastroUsuarioView().setVisible(true));
     }
 

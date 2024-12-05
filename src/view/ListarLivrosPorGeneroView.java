@@ -56,9 +56,9 @@ public class ListarLivrosPorGeneroView extends JFrame {
             LivroDAO livroDAO = new LivroDAO(connection);
             List<GeneroLiterario> generos = generoDAO.findAll();
 
-            comboGeneros.removeAllItems(); // Limpar a lista de gêneros
+            comboGeneros.removeAllItems();
             for (GeneroLiterario genero : generos) {
-                if (livroDAO.countByGenero(genero.getId()) > 0) { // Verifica se há livros no gênero
+                if (livroDAO.countByGenero(genero.getId()) > 0) {
                     comboGeneros.addItem(genero);
                 }
             }
@@ -83,7 +83,7 @@ public class ListarLivrosPorGeneroView extends JFrame {
         tabelaLivros = new JTable(tableModel);
         tabelaLivros.setRowHeight(100);
         tabelaLivros.getColumnModel().getColumn(1).setCellRenderer(new ImageRenderer());
-        tabelaLivros.getColumnModel().getColumn(1).setPreferredWidth(100); // Tamanho da coluna de imagem
+        tabelaLivros.getColumnModel().getColumn(1).setPreferredWidth(100);
     }
 
     private void carregarLivrosPorGenero() {
@@ -119,14 +119,12 @@ public class ListarLivrosPorGeneroView extends JFrame {
     private ImageIcon carregarImagemIcon(String urlImagem) {
         if (urlImagem != null && !urlImagem.isEmpty()) {
             try {
-                // Verifica se é um link HTTP/HTTPS
                 if (urlImagem.startsWith("http://") || urlImagem.startsWith("https://")) {
                     URL url = new URL(urlImagem);
                     ImageIcon icon = new ImageIcon(url);
                     Image imagemRedimensionada = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
                     return new ImageIcon(imagemRedimensionada);
                 } else {
-                    // Carregar de arquivo local (se necessário)
                     ImageIcon icon = new ImageIcon(urlImagem);
                     Image imagemRedimensionada = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
                     return new ImageIcon(imagemRedimensionada);

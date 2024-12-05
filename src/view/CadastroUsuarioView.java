@@ -21,11 +21,9 @@ public class CadastroUsuarioView extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Painel principal
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(4, 2, 10, 10));
 
-        // Componentes do formulário
         JLabel lblNome = new JLabel("Nome:");
         txtNome = new JTextField();
         JLabel lblEmail = new JLabel("E-mail:");
@@ -47,7 +45,6 @@ public class CadastroUsuarioView extends JFrame {
         add(btnCadastrar, BorderLayout.SOUTH);
     }
 
-    // Método para cadastrar um novo usuário
     private void cadastrarUsuario(ActionEvent e) {
         String nome = txtNome.getText();
         String email = txtEmail.getText();
@@ -72,13 +69,11 @@ public class CadastroUsuarioView extends JFrame {
         abrirLoginView();
     }
 
-    // Método para voltar à tela de login
     private void abrirLoginView() {
-        dispose(); // Fecha a janela de cadastro
+        dispose();
         SwingUtilities.invokeLater(() -> new LoginView().setVisible(true));
     }
 
-    // Método principal para teste
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());

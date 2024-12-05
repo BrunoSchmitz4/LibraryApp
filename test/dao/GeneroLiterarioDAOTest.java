@@ -28,7 +28,6 @@ public class GeneroLiterarioDAOTest {
     @Test
     public void tearDown() {
         try {
-            // Fecha a conexão após cada teste
             if (connection != null) {
                 connection.close();
             }
@@ -38,7 +37,6 @@ public class GeneroLiterarioDAOTest {
     }
     
 //    Autora: Tiffani
-
     @Test
     public void testAdicionarGeneroLiterario() {
         GeneroLiterario genero = new GeneroLiterario();
@@ -53,22 +51,19 @@ public class GeneroLiterarioDAOTest {
 
     @Test
     public void testAdicionarLivroAoGenero() {
-        // Adiciona um gênero para associar ao livro
         GeneroLiterario genero = new GeneroLiterario();
         genero.setNome("Livro Técnico");
         generoDAO.create(genero);
 
-        // Verifica se o gênero foi adicionado corretamente
         List<GeneroLiterario> generos = generoDAO.findAll();
         assertEquals(1, generos.size());
-        assertEquals("Livro Técnico", generos.get(0).getNome()); // Corrigido para refletir o valor correto
+        assertEquals("Livro Técnico", generos.get(0).getNome());
 
-        // Adiciona um livro associado ao gênero
         LivroDAO livroDAO = new LivroDAO(connection);
         Livro livro = new Livro();
         livro.setTitulo("HeartStopper");
         livro.setAutor("Alice Oseman");
-        livro.setGeneroLiterario(generos.get(0).getId()); // Define o ID do gênero
+        livro.setGeneroLiterario(generos.get(0).getId());
         livro.setClassificacao(5);
         livro.setImagem("https://m.media-amazon.com/images/I/8129HX+5JGL._SY425_.jpg");
         livro.setFavorito(true);
@@ -95,7 +90,6 @@ public class GeneroLiterarioDAOTest {
         genero.setNome("Livro LGBTQIA+");
         generoDAO.create(genero);
 
-        // Tenta atualizar o nome para um valor vazio
         genero.setNome("");
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             generoDAO.update(genero);
@@ -109,7 +103,6 @@ public class GeneroLiterarioDAOTest {
         genero.setNome("Livro LGBTQIA+");
         generoDAO.create(genero);
 
-        // Atualiza o nome do gênero
         genero.setNome("Romance Escolar");
         generoDAO.update(genero);
 
