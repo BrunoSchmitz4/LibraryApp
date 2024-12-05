@@ -3,6 +3,7 @@ package view;
 import dao.ConnectionFactory;
 import dao.GeneroLiterarioDAO;
 import dao.LivroDAO;
+import dao.TestConnection;
 import models.Livro;
 import models.GeneroLiterario;
 
@@ -13,6 +14,7 @@ import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import static org.junit.Assert.fail;
 
 public class CadastroLivroView extends JDialog {
 
@@ -199,11 +201,17 @@ public class CadastroLivroView extends JDialog {
 
 
     private void popularComboGenero() {
-        GeneroLiterarioDAO generoDAO = new GeneroLiterarioDAO();
-        List<GeneroLiterario> generos = generoDAO.findAll();
-        for (GeneroLiterario genero : generos) {
-            comboGenero.addItem(genero);
+        try {
+            GeneroLiterarioDAO generoDAO = new GeneroLiterarioDAO(TestConnection.getConnection());
+            List<GeneroLiterario> generos = generoDAO.findAll();
+            for (GeneroLiterario genero : generos) {
+                comboGenero.addItem(genero);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Erro ao inicializar a conexão com o banco de dados de teste.");
         }
+        
     }
 
     private void carregarDadosParaEdicao(Livro livro) {

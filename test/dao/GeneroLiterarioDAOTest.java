@@ -18,10 +18,7 @@ public class GeneroLiterarioDAOTest {
     @Before
     public void setUp() {
         try {
-            // Inicializa a conexão com o banco de dados existente para testes
-            connection = ConnectionFactory.getConnection(); // Método de fábrica de conexão já configurado em seu código
-            // Cria a instância do DAO sem passar a conexão pelo construtor
-            generoDAO = new GeneroLiterarioDAO();
+            generoDAO = new GeneroLiterarioDAO(TestConnection.getConnection());
         } catch (Exception e) {
             e.printStackTrace();
             fail("Erro ao inicializar a conexão com o banco de dados de teste.");
@@ -39,19 +36,19 @@ public class GeneroLiterarioDAOTest {
             e.printStackTrace();
         }
     }
+    
+//    Autora: Tiffani
 
     @Test
     public void testAdicionarGeneroLiterario() {
         GeneroLiterario genero = new GeneroLiterario();
         genero.setNome("Livro Técnico");
 
-        // Adiciona o gênero literário
         generoDAO.create(genero);
 
-        // Verifica se o gênero foi adicionado com sucesso
         List<GeneroLiterario> generos = generoDAO.findAll();
         assertEquals(1, generos.size());
-        assertEquals("Livro LGBTQIA+", generos.get(0).getNome());
+        assertEquals("Livro Técnico", generos.get(0).getNome());
     }
 
     @Test
@@ -64,13 +61,13 @@ public class GeneroLiterarioDAOTest {
         // Verifica se o gênero foi adicionado corretamente
         List<GeneroLiterario> generos = generoDAO.findAll();
         assertEquals(1, generos.size());
-        assertEquals("Livro LGBTQIA+", generos.get(0).getNome());
+        assertEquals("Livro Técnico", generos.get(0).getNome()); // Corrigido para refletir o valor correto
 
         // Adiciona um livro associado ao gênero
-        LivroDAO livroDAO = new LivroDAO(connection); // Instância do LivroDAO sem argumentos
+        LivroDAO livroDAO = new LivroDAO(connection);
         Livro livro = new Livro();
         livro.setTitulo("HeartStopper");
-        livro.setAutor("Alise Oseman");
+        livro.setAutor("Alice Oseman");
         livro.setGeneroLiterario(generos.get(0).getId()); // Define o ID do gênero
         livro.setClassificacao(5);
         livro.setImagem("https://m.media-amazon.com/images/I/8129HX+5JGL._SY425_.jpg");

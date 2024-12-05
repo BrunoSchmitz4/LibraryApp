@@ -15,11 +15,9 @@ public class LivroDAOTest {
 
     @Before
     public void setUp() throws SQLException {
-        // Simulação de conexão para testes; substitua por uma conexão real para testes de integração
         livroDAO = new LivroDAO(TestConnection.getConnection());
     }
     
-
     //    Autor: Bruno
     @Test
     public void testGeneroNaoPodeSerVazio() {

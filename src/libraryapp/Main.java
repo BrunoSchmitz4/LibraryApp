@@ -1,20 +1,33 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package libraryapp;
+import com.formdev.flatlaf.FlatLightLaf;
+
+import view.LoginView; // Certifique-se de que o pacote está correto
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
+ * Classe principal do projeto.
  *
  * @author bruno
  */
 public class Main {
 
     /**
-     * @param args the command line arguments
+     * Método principal do projeto.
+     *
+     * @param args os argumentos da linha de comando
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        try {
+            UIManager.setLookAndFeel(new FlatLightLaf());
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            LoginView frame = new LoginView();
+            frame.setVisible(true);
+        });
     }
-    
 }

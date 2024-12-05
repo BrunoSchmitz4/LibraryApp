@@ -7,18 +7,24 @@ import java.util.List;
 
 public class GeneroLiterarioDAO {
 
+    private Connection connection;
+
     private static final String INSERT = "INSERT INTO genero_literario (nome) VALUES (?)";
     private static final String UPDATE = "UPDATE genero_literario SET nome = ? WHERE id = ?";
     private static final String DELETE = "DELETE FROM genero_literario WHERE id = ?";
     private static final String FIND_ALL = "SELECT * FROM genero_literario";
     private static final String FIND_BY_ID = "SELECT * FROM genero_literario WHERE id = ?";
 
+    // Construtor que recebe uma conexão como argumento
+    public GeneroLiterarioDAO(Connection connection) {
+        this.connection = connection;
+    }
+
     // Criar um novo gênero literário
     public void create(GeneroLiterario genero) {
         validateGenero(genero);
 
-        try (Connection connection = ConnectionFactory.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(INSERT)) {
+        try (PreparedStatement stmt = connection.prepareStatement(INSERT)) {
             stmt.setString(1, genero.getNome());
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -30,8 +36,7 @@ public class GeneroLiterarioDAO {
     public void update(GeneroLiterario genero) {
         validateGenero(genero);
 
-        try (Connection connection = ConnectionFactory.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
+        try (PreparedStatement stmt = connection.prepareStatement(UPDATE)) {
             stmt.setString(1, genero.getNome());
             stmt.setInt(2, genero.getId());
             stmt.executeUpdate();
@@ -42,8 +47,7 @@ public class GeneroLiterarioDAO {
 
     // Excluir um gênero literário pelo ID
     public void delete(int id) {
-        try (Connection connection = ConnectionFactory.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(DELETE)) {
+        try (PreparedStatement stmt = connection.prepareStatement(DELETE)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -54,8 +58,7 @@ public class GeneroLiterarioDAO {
     // Buscar todos os gêneros literários
     public List<GeneroLiterario> findAll() {
         List<GeneroLiterario> generos = new ArrayList<>();
-        try (Connection connection = ConnectionFactory.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(FIND_ALL);
+        try (PreparedStatement stmt = connection.prepareStatement(FIND_ALL);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 generos.add(new GeneroLiterario(
@@ -71,8 +74,7 @@ public class GeneroLiterarioDAO {
 
     // Buscar um gênero literário por ID
     public GeneroLiterario findById(int id) {
-        try (Connection connection = ConnectionFactory.getConnection();
-             PreparedStatement stmt = connection.prepareStatement(FIND_BY_ID)) {
+        try (PreparedStatement stmt = connection.prepareStatement(FIND_BY_ID)) {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {

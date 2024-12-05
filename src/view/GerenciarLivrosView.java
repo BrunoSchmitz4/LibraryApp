@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 public class GerenciarLivrosView extends JFrame {
 
-    private JTable tabelaLivros;
+    public JTable tabelaLivros;
     private DefaultTableModel tableModel;
     private boolean exibirFavoritos = false; // Controle para o botão "Exibir Favoritos"
 
@@ -216,4 +216,9 @@ public class GerenciarLivrosView extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new GerenciarLivrosView().setVisible(true));
     }
+    
+    public JTable getTabelaLivros() {
+        return tabelaLivros;
+    }
+
 }

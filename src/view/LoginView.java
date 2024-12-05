@@ -53,6 +53,19 @@ public class LoginView extends JFrame {
 
         add(bottomPanel, BorderLayout.SOUTH);
     }
+    
+    public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(new FlatLightLaf());
+        } catch (UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            LoginView frame = new LoginView();
+            frame.setVisible(true);
+        });
+    }
 
     private void autenticarUsuario(ActionEvent e) {
     String email = txtEmail.getText();
@@ -82,23 +95,8 @@ public class LoginView extends JFrame {
         SwingUtilities.invokeLater(() -> new CadastroUsuarioView().setVisible(true));
     }
 
-    // Método para abrir o menu principal (exemplo)
     private void abrirMenuPrincipal() {
-        dispose(); // Fecha a janela de login
+        dispose();
         SwingUtilities.invokeLater(() -> new MenuPrincipal().setVisible(true));
-    }
-
-    // Método principal para teste
-    public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel(new FlatLightLaf());
-        } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
-
-        SwingUtilities.invokeLater(() -> {
-            LoginView frame = new LoginView();
-            frame.setVisible(true);
-        });
     }
 }

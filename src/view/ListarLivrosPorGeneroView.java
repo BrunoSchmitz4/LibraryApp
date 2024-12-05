@@ -19,7 +19,8 @@ public class ListarLivrosPorGeneroView extends JFrame {
     private JComboBox<GeneroLiterario> comboGeneros;
     private JTable tabelaLivros;
     private DefaultTableModel tableModel;
-
+    private Connection connection;
+    
     public ListarLivrosPorGeneroView() {
         setTitle("Listar Livros por Gênero");
         setSize(800, 600);
@@ -50,15 +51,20 @@ public class ListarLivrosPorGeneroView extends JFrame {
     }
 
     private void carregarGeneros() {
-        GeneroLiterarioDAO generoDAO = new GeneroLiterarioDAO();
-        LivroDAO livroDAO = new LivroDAO(ConnectionFactory.getConnection());
-        List<GeneroLiterario> generos = generoDAO.findAll();
+        try (Connection connection = ConnectionFactory.getConnection()) {
+            GeneroLiterarioDAO generoDAO = new GeneroLiterarioDAO(connection);
+            LivroDAO livroDAO = new LivroDAO(connection);
+            List<GeneroLiterario> generos = generoDAO.findAll();
 
-        comboGeneros.removeAllItems(); // Limpar a lista de gêneros
-        for (GeneroLiterario genero : generos) {
-            if (livroDAO.countByGenero(genero.getId()) > 0) { // Verifica se há livros no gênero
-                comboGeneros.addItem(genero);
+            comboGeneros.removeAllItems(); // Limpar a lista de gêneros
+            for (GeneroLiterario genero : generos) {
+                if (livroDAO.countByGenero(genero.getId()) > 0) { // Verifica se há livros no gênero
+                    comboGeneros.addItem(genero);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Erro ao carregar gêneros.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -89,7 +95,7 @@ public class ListarLivrosPorGeneroView extends JFrame {
                 atualizarTabela(livros);
             } catch (Exception e) {
                 e.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Erro ao conectar ao banco de dados.", "Erro", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Erro ao carregar livros.", "Erro", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
